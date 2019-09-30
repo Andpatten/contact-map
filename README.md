@@ -1,5 +1,3 @@
-# Contact Map
-
 ## Introduction
 
 ## Overview

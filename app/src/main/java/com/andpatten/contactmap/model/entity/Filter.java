@@ -23,10 +23,8 @@ public class Filter {
   @ColumnInfo(name = "filter_id")
   private long id;
 
-  @ColumnInfo(name = "query_id")
+  @ColumnInfo(name = "query_id", index = true)
   private long queryId;
-
-  
 
   private long state;
 
@@ -34,4 +32,44 @@ public class Filter {
 
   private long limit;
 
+
+  public void setState(long state) {
+    this.state = state;
+  }
+
+  public void setDistance(long distance) {
+    this.distance = distance;
+  }
+
+  public void setLimit(long limit) {
+    this.limit = limit;
+  }
+
+  public long getId() {
+    return id;
+  }
+
+  public long getQueryId() {
+    return queryId;
+  }
+
+  public void setQueryId(long queryId) {
+    this.queryId = queryId;
+  }
+
+  public long getState() {
+    return state;
+  }
+
+  public long getDistance() {
+    return distance;
+  }
+
+  public long getLimit() {
+    return limit;
+  }
+
+  public void setId(long id) {
+    this.id = id;
+  }
 }

@@ -1,0 +1,170 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "300a9725fca7769358e8335ed50fd6ae",
+    "entities": [
+      {
+        "tableName": "Filter",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`filter_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `query_id` INTEGER NOT NULL, `state` INTEGER NOT NULL, `distance` INTEGER NOT NULL, `limit` INTEGER NOT NULL, FOREIGN KEY(`query_id`) REFERENCES `Query`(`query_id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "filter_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "queryId",
+            "columnName": "query_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "state",
+            "columnName": "state",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "distance",
+            "columnName": "distance",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "limit",
+            "columnName": "limit",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "filter_id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [
+          {
+            "name": "index_Filter_query_id",
+            "unique": false,
+            "columnNames": [
+              "query_id"
+            ],
+            "createSql": "CREATE  INDEX `index_Filter_query_id` ON `${TABLE_NAME}` (`query_id`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "Query",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "query_id"
+            ],
+            "referencedColumns": [
+              "query_id"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "Query",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`query_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `rawContactId` INTEGER NOT NULL, `name` TEXT)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "query_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "rawContactId",
+            "columnName": "rawContactId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "query_id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "Sort",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`sort_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `query_id` INTEGER NOT NULL, `asc` INTEGER NOT NULL, `alphabetical` INTEGER NOT NULL, FOREIGN KEY(`query_id`) REFERENCES `Query`(`query_id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "sort_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "queryId",
+            "columnName": "query_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "asc",
+            "columnName": "asc",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "alphabetical",
+            "columnName": "alphabetical",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "sort_id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [
+          {
+            "name": "index_Sort_query_id",
+            "unique": false,
+            "columnNames": [
+              "query_id"
+            ],
+            "createSql": "CREATE  INDEX `index_Sort_query_id` ON `${TABLE_NAME}` (`query_id`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "Query",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "query_id"
+            ],
+            "referencedColumns": [
+              "query_id"
+            ]
+          }
+        ]
+      }
+    ],
+    "views": [],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '300a9725fca7769358e8335ed50fd6ae')"
+    ]
+  }
+}

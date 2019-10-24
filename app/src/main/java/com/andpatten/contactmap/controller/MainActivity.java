@@ -1,12 +1,21 @@
 package com.andpatten.contactmap.controller;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.ContactsContract;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import com.andpatten.contactmap.R;
@@ -16,6 +25,8 @@ import com.google.android.material.snackbar.Snackbar;
 
 public class MainActivity extends AppCompatActivity
     implements NavigationView.OnNavigationItemSelectedListener {
+
+  private static final int PERMISSIONS_REQUEST_CODE = 100;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +52,7 @@ public class MainActivity extends AppCompatActivity
 
     NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
     navigationView.setNavigationItemSelectedListener(this);
+    checkPermissions();
   }
 
   @Override
@@ -99,4 +111,65 @@ public class MainActivity extends AppCompatActivity
     drawer.closeDrawer(GravityCompat.START);
     return true;
   }
+
+
+  private void checkPermissions() {
+    if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS)
+        != PackageManager.PERMISSION_GRANTED) {
+      if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+          Manifest.permission.READ_CONTACTS)) {
+        // Show an explanation to the user *asynchronously* -- don't block
+        // this thread waiting for the user's response! After the user
+        // sees the explanation, try again to request the permission.
+
+      }
+      ActivityCompat.requestPermissions(this,
+          new String[]{Manifest.permission.READ_CONTACTS},
+          PERMISSIONS_REQUEST_CODE);
+    }
+  }
+
+  @Override
+  public void onRequestPermissionsResult(int requestCode,
+      String[] permissions, int[] grantResults) {
+    switch (requestCode) {
+      case PERMISSIONS_REQUEST_CODE: {
+        if (grantResults.length == 0
+            || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+          Log.d("Permissions", "Permission denied!");
+          // We should shut down the app. How?
+          this.finishAffinity();
+          Toast.makeText(this, "Contact Map requires access to your contacts to run. Re-run to allow permission", Toast.LENGTH_LONG).show();
+
+        }
+      }
+    }
+  }
+
+// Testing retrieving contact info under this line ____________________________________________
+
+//  private Intent intent = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
+//  startActivityForResult(intent, 1){
+//
+//  }
+
+// ...
+
+//  public static String getRawContactId(String contactId) {
+//    String res = "";
+// Uri uri = ContactsContract.RawContacts.CONTENT_URI;
+//    String[] projection = new String[]{ContactsContract.RawContacts._ID};
+//    String selection = ContactsContract.RawContacts.CONTACT_ID + " = ?";
+//    String[] selectionArgs = new String[]{contactId};
+//    getRawContactId(contactId);
+
+//    if (c != null && c.moveToFirst()) {
+//      res = c.getString(c.getColumnIndex(ContactsContract.RawContacts._ID));
+//      c.close();
+//    }
+//    return res;
+//    return res;
+//  }
 }
+
+

@@ -3,6 +3,8 @@
   xmlns:tools="http://schemas.android.com/tools"
   package="com.andpatten.contactmap">
 
+  <uses-permission android:name="android.permission.READ_CONTACTS"/>
+
   <application
     android:allowBackup="false"
     android:icon="@mipmap/ic_launcher"

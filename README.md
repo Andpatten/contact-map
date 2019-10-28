@@ -16,12 +16,12 @@ People who travel a lot for work.
 #### [Wireframe Diagram](docs/wireframe.md)
 #### [DDL](docs/ddl.md)
 ### Entity Classes
-#### [Filter Class](docs/filter.md)
-#### [Query Class](docs/query.md)
-#### [Sort Class](docs/sort.md)
+#### [Filter Class](https://github.com/Andpatten/contact-map/blob/master/app/src/main/java/com/andpatten/contactmap/model/entity/Filter.java)
+#### [Query Class](https://github.com/Andpatten/contact-map/blob/master/app/src/main/java/com/andpatten/contactmap/model/entity/Query.java)
+#### [Sort Class](https://github.com/Andpatten/contact-map/blob/master/app/src/main/java/com/andpatten/contactmap/model/entity/Sort.java)
 ### Dao Classes
-#### [Filter Dao](docs/filterdao.md)
-#### [Query Dao](docs/querydao.md)
-#### [Sort Dao](docs/sortdao.md)
+#### [Filter Dao](https://github.com/Andpatten/contact-map/blob/master/app/src/main/java/com/andpatten/contactmap/model/dao/FilterDao.java)
+#### [Query Dao](https://github.com/Andpatten/contact-map/blob/master/app/src/main/java/com/andpatten/contactmap/model/dao/QueryDao.java)
+#### [Sort Dao](https://github.com/Andpatten/contact-map/blob/master/app/src/main/java/com/andpatten/contactmap/model/dao/SortDao.java)
 ### Database
-#### [Contact Map Database](docs/database.md)
+#### [Contact Map Database](https://github.com/Andpatten/contact-map/blob/master/app/src/main/java/com/andpatten/contactmap/service/ContactMapDatabase.java)

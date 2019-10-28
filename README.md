@@ -15,3 +15,13 @@ People who travel a lot for work.
 #### [Entity Relationship Diagram](docs/erd.md)
 #### [Wireframe Diagram](docs/wireframe.md)
 #### [DDL](docs/ddl.md)
+### Entity Classes
+#### [Filter Class](docs/filter.md)
+#### [Query Class](docs/query.md)
+#### [Sort Class](docs/sort.md)
+### Dao Classes
+#### [Filter Dao](docs/filterdao.md)
+#### [Query Dao](docs/querydao.md)
+#### [Sort Dao](docs/sortdao.md)
+### Database
+#### [Contact Map Database](docs/database.md)

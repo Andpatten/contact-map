@@ -1,5 +1,9 @@
 apply plugin: 'com.android.application'
-
+def getServiceProperty(String property) {
+    Properties properties = new Properties();
+    properties.load(new FileInputStream("../../services/geocode.properties"));
+    return String.format("\"%s\"" , properties.getProperty(property));
+}
 android {
     compileSdkVersion 28
     defaultConfig {
@@ -9,6 +13,8 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        buildConfigField "String", "BASE_URL", '"https://maps.googleapis.com/maps/api/geocode/"'
+        buildConfigField "String", "API_KEY", getServiceProperty("api_key")
         javaCompileOptions {
             annotationProcessorOptions {
                 arguments = ["room.schemaLocation": "$projectDir/schemas".toString()]
@@ -23,6 +29,10 @@ android {
     }
     packagingOptions {
         exclude 'META-INF/proguard/androidx-annotations.pro'
+    }
+    compileOptions {
+        sourceCompatibility = '1.8'
+        targetCompatibility = '1.8'
     }
 }
 
@@ -39,6 +49,16 @@ dependencies {
     implementation "androidx.room:room-runtime:$room_version"
     implementation 'androidx.legacy:legacy-support-v4:1.0.0-beta01'
     annotationProcessor "androidx.room:room-compiler:$room_version"
+
+    def retrofit_version = "2.6.0"
+    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
+    implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
+    implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofit_version"
+
+
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.14.2'
+
+
 
     implementation 'com.facebook.stetho:stetho:1.5.1'
 

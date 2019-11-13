@@ -1,0 +1,2 @@
+-bootclasspath "C:\Program Files\Java\jdk1.8.0_222\jre\lib\rt.jar";C:\android\sdk\platforms\android-21\android.jar
+-link -link https://docs.oracle.com/javase/8/docs/api/

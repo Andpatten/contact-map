@@ -4,7 +4,8 @@ import android.provider.ContactsContract.RawContacts;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
-
+//import com.google.maps.GeoApiContext;
+//import com.google.maps.android.SphericalUtil;
 @Entity
 public class Query {
 
@@ -12,9 +13,43 @@ public class Query {
   @ColumnInfo(name = "query_id")
   private long id;
 
-  private long rawContactId; //90% sure "RawContacts" is what I need here.
+  private long rawContactId;
+
+  //TODO how to implement RawContacts.
+//  private RawContacts contacts;
 
   private String name;
+
+  private double longitude;
+
+  private double latitude;
+
+  //private LatLng
+
+//  public RawContacts getContacts() {
+//    return contacts;
+//  }
+//
+//  public void setContacts(RawContacts contacts) {
+//    this.contacts = contacts;
+//  }
+
+  public double getLongitude() {
+    return longitude;
+  }
+
+  public void setLongitude(double longitude) {
+    this.longitude = longitude;
+  }
+
+  public double getLatitude() {
+    return latitude;
+  }
+
+  public void setLatitude(double latitude) {
+    this.latitude = latitude;
+  }
+
 
   public long getId() {
     return id;

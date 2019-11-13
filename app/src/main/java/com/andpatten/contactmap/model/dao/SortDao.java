@@ -28,6 +28,4 @@ public interface SortDao {
   @Delete
   int delete(Sort sort);
 
-
-
 }

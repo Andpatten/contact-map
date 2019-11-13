@@ -16,8 +16,6 @@ import com.andpatten.contactmap.model.entity.Sort;
     version = 1, exportSchema = true
 )
 
-
-
   public abstract class ContactMapDatabase extends RoomDatabase {
 
     protected ContactMapDatabase() {}
@@ -38,7 +36,6 @@ import com.andpatten.contactmap.model.entity.Sort;
 
     public abstract SortDao getSortDao();
 
-
     private static class InstanceHolder {
 
       private static final ContactMapDatabase INSTANCE;
@@ -49,9 +46,5 @@ import com.andpatten.contactmap.model.entity.Sort;
       }
 
     }
-
-
-
-
 
   }

@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "300a9725fca7769358e8335ed50fd6ae",
+    "identityHash": "999399b6b0f3c6dc583f77ef7d6daf93",
     "entities": [
       {
         "tableName": "Filter",
@@ -71,7 +71,7 @@
       },
       {
         "tableName": "Query",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`query_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `rawContactId` INTEGER NOT NULL, `name` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`query_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `rawContactId` INTEGER NOT NULL, `name` TEXT, `longitude` REAL NOT NULL, `latitude` REAL NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
@@ -90,6 +90,18 @@
             "columnName": "name",
             "affinity": "TEXT",
             "notNull": false
+          },
+          {
+            "fieldPath": "longitude",
+            "columnName": "longitude",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "latitude",
+            "columnName": "latitude",
+            "affinity": "REAL",
+            "notNull": true
           }
         ],
         "primaryKey": {
@@ -164,7 +176,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '300a9725fca7769358e8335ed50fd6ae')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '999399b6b0f3c6dc583f77ef7d6daf93')"
     ]
   }
 }

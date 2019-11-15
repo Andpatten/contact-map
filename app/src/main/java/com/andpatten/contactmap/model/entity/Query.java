@@ -16,7 +16,7 @@ public class Query {
   private long rawContactId;
 
   //TODO how to implement RawContacts.
-//  private RawContacts contacts;
+ // private RawContacts contacts;
 
   private String name;
 

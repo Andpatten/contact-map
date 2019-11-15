@@ -19,6 +19,8 @@ import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import com.andpatten.contactmap.R;
+import com.andpatten.contactmap.service.ContactService;
+import com.andpatten.contactmap.viewmodel.MainViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
@@ -53,6 +55,9 @@ public class MainActivity extends AppCompatActivity
     NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
     navigationView.setNavigationItemSelectedListener(this);
     checkPermissions();
+    //testing mainviewmodel and contact retrieval
+    ContactService.setApplicationContext(getApplicationContext());
+    MainViewModel mvm = new MainViewModel();
   }
 
   @Override
@@ -127,6 +132,7 @@ public class MainActivity extends AppCompatActivity
           new String[]{Manifest.permission.READ_CONTACTS},
           PERMISSIONS_REQUEST_CODE);
     }
+
   }
 
   @Override
@@ -139,37 +145,17 @@ public class MainActivity extends AppCompatActivity
           Log.d("Permissions", "Permission denied!");
           // We should shut down the app. How?
           this.finishAffinity();
-          Toast.makeText(this, "Contact Map requires access to your contacts to run. Re-run to allow permission", Toast.LENGTH_LONG).show();
-
+          Toast.makeText(this,
+              "Contact Map requires access to your contacts to run. Please re-run to allow permission",
+              Toast.LENGTH_LONG).show();
         }
+
       }
+
     }
+
   }
 
-// Testing retrieving contact info under this line ____________________________________________
-
-//  private Intent intent = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
-//  startActivityForResult(intent, 1){
-//
-//  }
-
-// ...
-
-//  public static String getRawContactId(String contactId) {
-//    String res = "";
-// Uri uri = ContactsContract.RawContacts.CONTENT_URI;
-//    String[] projection = new String[]{ContactsContract.RawContacts._ID};
-//    String selection = ContactsContract.RawContacts.CONTACT_ID + " = ?";
-//    String[] selectionArgs = new String[]{contactId};
-//    getRawContactId(contactId);
-
-//    if (c != null && c.moveToFirst()) {
-//      res = c.getString(c.getColumnIndex(ContactsContract.RawContacts._ID));
-//      c.close();
-//    }
-//    return res;
-//    return res;
-//  }
 }
 
 

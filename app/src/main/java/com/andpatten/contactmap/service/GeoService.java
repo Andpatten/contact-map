@@ -1,14 +1,16 @@
 package com.andpatten.contactmap.service;
 
+import static com.andpatten.contactmap.BuildConfig.API_KEY;
+import static com.andpatten.contactmap.BuildConfig.BASE_URL;
+
+import android.content.ContentResolver;
+import android.database.Cursor;
+import android.provider.ContactsContract;
 import com.andpatten.contactmap.BuildConfig;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import io.reactivex.Single;
-import java.util.Observable;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import okhttp3.logging.HttpLoggingInterceptor.Level;
-import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -18,14 +20,19 @@ import retrofit2.http.Query;
 
 public interface GeoService {
 
-  String baseUrl = BuildConfig.BASE_URL;
+  String baseUrl = BASE_URL;
+
 
   static GeoService getInstance() {
     return InstanceHolder.INSTANCE;
-     }
+  }
 
   @GET("maps/api/geocode/")
-  Single<com.andpatten.contactmap.model.entity.Query> get(@Query("address") String address, @Query("api_key") String api_key);
+  Single<com.andpatten.contactmap.model.entity.Query> get(@Query("address") String address,
+      @Query("api_key") String api_key);
+
+  @POST("maps/api/geocode/")
+  Single<com.andpatten.contactmap.model.entity.Query> post(@Query("address") String address);
 
 
   class InstanceHolder {
@@ -42,7 +49,7 @@ public interface GeoService {
       Retrofit retrofit = new Retrofit.Builder()
           .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
           .addConverterFactory(GsonConverterFactory.create())
-          .baseUrl(BuildConfig.BASE_URL)
+          .baseUrl(BASE_URL)
           .client(client)
           .build();
       INSTANCE = retrofit.create(GeoService.class);

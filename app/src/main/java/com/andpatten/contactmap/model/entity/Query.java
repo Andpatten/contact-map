@@ -15,24 +15,11 @@ public class Query {
 
   private long rawContactId;
 
-  //TODO how to implement RawContacts.
- // private RawContacts contacts;
-
   private String name;
 
   private double longitude;
 
   private double latitude;
-
-  //private LatLng
-
-//  public RawContacts getContacts() {
-//    return contacts;
-//  }
-//
-//  public void setContacts(RawContacts contacts) {
-//    this.contacts = contacts;
-//  }
 
   public double getLongitude() {
     return longitude;

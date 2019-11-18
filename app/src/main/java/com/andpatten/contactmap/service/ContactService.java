@@ -1,16 +1,15 @@
 package com.andpatten.contactmap.service;
 
-import static com.andpatten.contactmap.BuildConfig.API_KEY;
-import static com.andpatten.contactmap.service.GeoService.baseUrl;
-
 import android.content.ContentResolver;
 import android.content.Context;
+import android.database.AbstractCursor;
 import android.database.Cursor;
+import android.net.Uri;
 import android.provider.ContactsContract;
-import android.provider.ContactsContract.CommonDataKinds;
 import android.provider.ContactsContract.CommonDataKinds.Phone;
-import android.provider.ContactsContract.CommonDataKinds.StructuredName;
-import android.provider.ContactsContract.Data;
+import android.provider.ContactsContract.CommonDataKinds.StructuredPostal;
+import android.provider.ContactsContract.Contacts;
+import android.util.Log;
 import com.andpatten.contactmap.model.pojo.Contact;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,22 +30,40 @@ public class ContactService {
   }
 
   public List<Contact> getContacts(String keyword, Float maxDistance, Boolean alphabetical) {
+    ContentResolver resolver = applicationContext.getContentResolver();
+
+
     List<Contact> contacts = new ArrayList<>();
-    Cursor cursor = applicationContext.getContentResolver()
-        .query(Data.CONTENT_URI, new String[]{Data._ID, Phone.NUMBER, StructuredName.DISPLAY_NAME}, null, null, null); //FIXME 2nd is filter values, 3rd is specify sort order
+    //TODO Investigate specifying partial filter through args.
+
+
+    Cursor cursor = resolver
+        .query(Contacts.CONTENT_URI, new String[]{Contacts._ID, Contacts.LOOKUP_KEY, Contacts.DISPLAY_NAME_PRIMARY}, null, null, null); //FIXME 2nd is filter values, 3rd is specify sort order
     while (cursor.moveToNext()) {
+
       Contact contact = new Contact();
-//      String street = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.STREET));
-//      String state = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.REGION));
-//      String city = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.CITY));
+      String id = cursor.getString(cursor.getColumnIndex(Contacts._ID));
+      String displayName = cursor.getString(cursor.getColumnIndex(Contacts.DISPLAY_NAME_PRIMARY));
+
+      //TODO finish getting addresses from Contacts for geocoding api requests.
+//      String street = cursor.getString(cursor.getColumnIndex(StructuredPostal.STREET));
+//      String city = cursor.getString(cursor.getColumnIndex(StructuredPostal.CITY));
+//      String state = cursor.getString(cursor.getColumnIndex(StructuredPostal.COUNTRY));
+
+      contact.setDisplayName(displayName);
+      Cursor phones = resolver.query(Phone.CONTENT_URI, null,
+          Phone.CONTACT_ID + " = " + id, null, null);
+      while (phones.moveToNext()) {
+        int type = phones.getInt(phones.getColumnIndex(Phone.TYPE));
+        String number = phones.getString(phones.getColumnIndex(Phone.NUMBER));
+        contact.setPhoneNumber(number);
+      }
+      //TODO Apply additional filter if neccesary.
       contacts.add(contact);
     }
     //TODO Sort contacts
-    //Does retreive empty contact list from android contacts. 
-    for (Contact contact :
-        contacts) {
-      System.out.println(contact.toString());
-    }
+    //Does retreive empty contact list from android contacts.
+    Log.d(getClass().getSimpleName(), contacts.toString());
     return contacts;
   }
 

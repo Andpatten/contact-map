@@ -18,17 +18,24 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.RecyclerView;
 import com.andpatten.contactmap.R;
+import com.andpatten.contactmap.model.pojo.Contact;
 import com.andpatten.contactmap.service.ContactService;
 import com.andpatten.contactmap.viewmodel.MainViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity
     implements NavigationView.OnNavigationItemSelectedListener {
 
   private static final int PERMISSIONS_REQUEST_CODE = 100;
+
+  private MainViewModel viewModel;
+  private RecyclerView recyclerView;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +64,15 @@ public class MainActivity extends AppCompatActivity
     checkPermissions();
     //testing mainviewmodel and contact retrieval
     ContactService.setApplicationContext(getApplicationContext());
-    MainViewModel mvm = new MainViewModel();
+    viewModel = ViewModelProviders.of(this).get(MainViewModel.class);
+    viewModel.getContacts().observe(this, (contacts) -> {
+//
+//      setContentView(R.layout.contact_list);
+//      recyclerView = (RecyclerView) findViewById(R.id.contacts);
+//
+//      recyclerView.setHasFixedSize(true);
+      //TODO Display list using listview/recyclerview.
+    });
   }
 
   @Override

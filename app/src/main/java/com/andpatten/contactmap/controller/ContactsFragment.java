@@ -4,15 +4,33 @@ import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
 import com.andpatten.contactmap.R;
+import com.andpatten.contactmap.model.pojo.Contact;
 import com.andpatten.contactmap.service.ContactService;
+import com.andpatten.contactmap.view.ContactRecyclerAdapter;
 import com.andpatten.contactmap.viewmodel.MainViewModel;
+import java.util.LinkedList;
 
-public class ContactsFragment extends Fragment {
+public abstract class ContactsFragment extends Fragment {
 
-  public ContactsFragment() {
-    //Required empty public constructor.
+  private MainViewModel viewModel;
+  private ContactRecyclerAdapter adapter;
+  private TextView name;
+  private TextView number;
+  private RecyclerView contacts;
+
+  @Override
+  public View onCreateView(LayoutInflater inflater, ViewGroup container,
+      Bundle savedInstanceState) {
+    View view = inflater.inflate(getLayout(), container, false);
+    contacts = view.findViewById(R.id.contacts);
+    name = view.findViewById(R.id.name);
+    number = view.findViewById(R.id.number);
+    return view;
   }
 
   @Override
@@ -25,11 +43,13 @@ public class ContactsFragment extends Fragment {
 
     return view;
   }
-//
-//  @Override
-//  public int getLayout() {
-//  return (R.layout.contact_list);
-//  }
 
-  //Recyclerview (adapter) (layout manager)
+  private MainViewModel getViewModel() {
+    return viewModel;
+  }
+
+  public abstract LinkedList<Contact> contactLinkedList(MainViewModel viewModel);
+
+  public abstract int getLayout();
+
 }

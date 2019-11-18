@@ -66,6 +66,9 @@ public class MainActivity extends AppCompatActivity
     ContactService.setApplicationContext(getApplicationContext());
     viewModel = ViewModelProviders.of(this).get(MainViewModel.class);
     viewModel.getContacts().observe(this, (contacts) -> {
+
+
+
 //
 //      setContentView(R.layout.contact_list);
 //      recyclerView = (RecyclerView) findViewById(R.id.contacts);
@@ -170,6 +173,7 @@ public class MainActivity extends AppCompatActivity
     }
 
   }
+
 
 }
 

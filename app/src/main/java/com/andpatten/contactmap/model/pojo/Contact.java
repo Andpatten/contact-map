@@ -9,6 +9,60 @@ public class Contact {
   private String displayName;
   private String phoneNumber;
   private Uri uri;
+  private String street;
+  private String city;
+  private String state;
+  private Float latitude;
+  private Float longitude;
+  private Float distance;
+
+  public Float getDistance() {
+    return distance;
+  }
+
+  public void setDistance(Float distance) {
+    this.distance = distance;
+  }
+
+  public String getStreet() {
+    return street;
+  }
+
+  public void setStreet(String street) {
+    this.street = street;
+  }
+
+  public String getCity() {
+    return city;
+  }
+
+  public void setCity(String city) {
+    this.city = city;
+  }
+
+  public String getState() {
+    return state;
+  }
+
+  public void setState(String state) {
+    this.state = state;
+  }
+
+  public Float getLatitude() {
+    return latitude;
+  }
+
+  public void setLatitude(Float latitude) {
+    this.latitude = latitude;
+  }
+
+  public Float getLongitude() {
+    return longitude;
+  }
+
+  public void setLongitude(Float longitude) {
+    this.longitude = longitude;
+  }
 
   public long getId() {
     return id;

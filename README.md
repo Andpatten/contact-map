@@ -13,6 +13,13 @@ Content developers who travel and need help keeping track of past and future emp
 Comedians who want to conveniently see their past friends/co-comedians from a particular show. 
 Salespeople who want help keeping track of past companies they have pitched to.
 
+## User Instructions
+
+After opening the app choose to allow the app access to your contacts when prompted. 
+The app will then retrieve your contacts and sort them based on proximity. 
+You can then decide what filter, sort order and max distance you wish to view contacts from. 
+The app will save your previous sort/filter/max distance options for next time. 
+
 
 #### [User stories](docs/user-stories.md) 
 #### [Entity Relationship Diagram](docs/erd.md)

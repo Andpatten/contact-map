@@ -1,5 +1,6 @@
 package com.andpatten.contactmap.model.pojo;
 
+import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
 public class CoordinatesResponse {
@@ -17,6 +18,7 @@ public class CoordinatesResponse {
 
   public static class Item {
 
+    @SerializedName("geometry")
     private Coordinates coordinates;
 
     public Coordinates getCoordinates() {

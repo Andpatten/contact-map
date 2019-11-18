@@ -7,6 +7,7 @@ import android.content.ContentResolver;
 import android.database.Cursor;
 import android.provider.ContactsContract;
 import com.andpatten.contactmap.BuildConfig;
+import com.andpatten.contactmap.model.pojo.CoordinatesResponse;
 import io.reactivex.Single;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -27,18 +28,14 @@ public interface GeoService {
     return InstanceHolder.INSTANCE;
   }
 
-  @GET("maps/api/geocode/")
-  Single<com.andpatten.contactmap.model.entity.Query> get(@Query("address") String address,
-      @Query("api_key") String api_key);
-
-  @POST("maps/api/geocode/")
-  Single<com.andpatten.contactmap.model.entity.Query> post(@Query("address") String address);
-
+  @GET("json")
+  Single<CoordinatesResponse> getCoordinates(@Query("address") String address,
+      @Query("key") String key);
 
   class InstanceHolder {
 
     private static final GeoService INSTANCE;
-    private static final String API_KEY;
+
 
     static {
       HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
@@ -53,7 +50,7 @@ public interface GeoService {
           .client(client)
           .build();
       INSTANCE = retrofit.create(GeoService.class);
-      API_KEY = BuildConfig.API_KEY;
+
     }
 
   }

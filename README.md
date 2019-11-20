@@ -15,10 +15,11 @@ Salespeople who want help keeping track of past companies they have pitched to.
 
 ## User Instructions
 
-After opening the app choose to allow the app access to your contacts when prompted. 
-The app will then retrieve your contacts and sort them based on proximity. 
-You can then decide what filter, sort order and max distance you wish to view contacts from. 
-The app will save your previous sort/filter/max distance options for next time. 
+After opening the app choose to allow the app access to your contacts and location when prompted. 
+You can then search your contacts and the app will sort your contacts based on proximity. 
+The seek bar allows you to set a maximum distance up to 100 miles. 
+You can change your contacts by clicking on them. 
+The app will soon save your previous queries for next time. 
 
 
 #### [User stories](docs/user-stories.md) 
@@ -37,3 +38,14 @@ The app will save your previous sort/filter/max distance options for next time.
 #### [Sort Dao](https://github.com/Andpatten/contact-map/blob/master/app/src/main/java/com/andpatten/contactmap/model/dao/SortDao.java)
 ### Database
 #### [Contact Map Database](https://github.com/Andpatten/contact-map/blob/master/app/src/main/java/com/andpatten/contactmap/service/ContactMapDatabase.java)
+### Activity
+#### [MainActivity](https://github.com/Andpatten/contact-map/blob/master/app/src/main/java/com/andpatten/contactmap/controller/MainActivity.java)
+### Services
+#### [GeoService](https://github.com/Andpatten/contact-map/blob/master/app/src/main/java/com/andpatten/contactmap/service/GeoService.java)
+#### [ContactService](https://github.com/Andpatten/contact-map/blob/master/app/src/main/java/com/andpatten/contactmap/service/ContactService.java)
+### View Model
+#### [MainViewModel](https://github.com/Andpatten/contact-map/blob/master/app/src/main/java/com/andpatten/contactmap/viewmodel/MainViewModel.java)
+### Pojos
+#### [Contact](https://github.com/Andpatten/contact-map/blob/master/app/src/main/java/com/andpatten/contactmap/viewmodel/MainViewModel.java)
+#### [Coordinates](https://github.com/Andpatten/contact-map/blob/master/app/src/main/java/com/andpatten/contactmap/model/pojo/Coordinates.java)
+#### [CoordinatesResponse](https://github.com/Andpatten/contact-map/blob/master/app/src/main/java/com/andpatten/contactmap/model/pojo/CoordinatesResponse.java)

@@ -1,3 +1,5 @@
+/*This work is copyright 2019, Andrew Patten. All right reserved.
+ */
 package com.andpatten.contactmap;
 
 import android.app.Application;
@@ -7,6 +9,7 @@ import android.location.Geocoder;
 import android.provider.ContactsContract.RawContacts;
 import android.util.Log;
 import com.andpatten.contactmap.service.ContactMapDatabase;
+import com.andpatten.contactmap.service.ContactService;
 import com.facebook.stetho.Stetho;
 import java.util.List;
 import java.util.Locale;
@@ -21,6 +24,7 @@ public class ContactMapApplication extends Application {
 //        new Picasso.Builder(this)
 //            .loggingEnabled(true)
 //            .build());
+    ContactService.setApplicationContext(this);
     ContactMapDatabase.setApplicationContext(this);
     final ContactMapDatabase database = ContactMapDatabase.getInstance();
     new Thread(new Runnable() {

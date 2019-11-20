@@ -6,7 +6,9 @@
   <uses-permission android:name="android.permission.READ_CONTACTS"/>
   <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
   <uses-permission android:name="android.permission.INTERNET"/>
-  <uses-feature android:name="android.hardware.location.gps"
+
+  <uses-feature
+    android:name="android.hardware.location.gps"
     android:required="true"/>
 
   <application
@@ -20,9 +22,8 @@
     tools:ignore="GoogleAppIndexingWarning">
     <activity
       android:label="@string/title_activity_main"
-      android:name=".controller.MainActivity"
-      android:theme="@style/AppTheme.NoActionBar">
-         <intent-filter>
+      android:name=".controller.MainActivity">
+      <intent-filter>
         <action android:name="android.intent.action.MAIN"/>
 
         <category android:name="android.intent.category.LAUNCHER"/>

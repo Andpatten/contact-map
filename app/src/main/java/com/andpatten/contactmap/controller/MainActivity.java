@@ -1,108 +1,143 @@
+/*This work is copyright 2019, Andrew Patten. All right reserved.
+ */
 package com.andpatten.contactmap.controller;
 
 import android.Manifest;
+import android.Manifest.permission;
+import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
-import android.net.Uri;
+import android.location.Location;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.SeekBar;
 import android.widget.Toast;
-import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
+import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.widget.SearchView.OnQueryTextListener;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.lifecycle.ViewModelProviders;
-import androidx.recyclerview.widget.RecyclerView;
 import com.andpatten.contactmap.R;
 import com.andpatten.contactmap.model.pojo.Contact;
-import com.andpatten.contactmap.service.ContactService;
 import com.andpatten.contactmap.viewmodel.MainViewModel;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.navigation.NavigationView;
-import com.google.android.material.snackbar.Snackbar;
-import java.util.List;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 
-public class MainActivity extends AppCompatActivity
-    implements NavigationView.OnNavigationItemSelectedListener {
+/**
+ * Main user interface for accessing users location, checking permissions, and displaying contacts.
+ */
+public class MainActivity extends AppCompatActivity {
 
-  private static final int PERMISSIONS_REQUEST_CODE = 100;
+  private static final String TAG = "MainActivity";
+
+  private static final int CONTACTS_PERMISSIONS_REQUEST_CODE = 100;
+  private static final int LOCATION_PERMISSIONS_REQUEST_CODE = 200;
 
   private MainViewModel viewModel;
-  private RecyclerView recyclerView;
+  private FusedLocationProviderClient fusedLocationProviderClient;
+  private Location myLocation;
+  private SearchView contactSearch;
+  private SeekBar maxDistance;
+  private ListView contactList;
 
+
+  /**
+   * Initializes UI and sets up observers for backing ViewModel data.
+   *
+   * @param savedInstanceState
+   */
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
-    Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-    setSupportActionBar(toolbar);
-
-    FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-    fab.setOnClickListener(new View.OnClickListener() {
+    contactSearch = findViewById(R.id.contact_search);
+    contactSearch.setOnQueryTextListener(new OnQueryTextListener() {
       @Override
-      public void onClick(View view) {
-        Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-            .setAction("Action", null).show();
+      public boolean onQueryTextSubmit(String query) {
+        viewModel.search(contactSearch.getQuery().toString(), maxDistance.getProgress());
+        return true;
+      }
+
+      @Override
+      public boolean onQueryTextChange(String newText) {
+        return false;
       }
     });
-
-    DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-    ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-        this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-    drawer.addDrawerListener(toggle);
-    toggle.syncState();
-
-    NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-    navigationView.setNavigationItemSelectedListener(this);
+    maxDistance = findViewById(R.id.max_distance);
+    contactList = findViewById(R.id.contact_list);
+    contactList.setOnItemClickListener((parent, view, position, id) -> {
+      Contact contact = (Contact) parent.getItemAtPosition(position);
+      Intent intent = new Intent(Intent.ACTION_VIEW);
+      intent.setData(contact.getUri());
+      startActivity(intent);
+    });
     checkPermissions();
+
+
     //testing mainviewmodel and contact retrieval
-    ContactService.setApplicationContext(getApplicationContext());
     viewModel = ViewModelProviders.of(this).get(MainViewModel.class);
     viewModel.getContacts().observe(this, (contacts) -> {
-
-
-
-//
-//      setContentView(R.layout.contact_list);
-//      recyclerView = (RecyclerView) findViewById(R.id.contacts);
-//
-//      recyclerView.setHasFixedSize(true);
-      //TODO Display list using listview/recyclerview.
+      ArrayAdapter<Contact> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, contacts);
+      contactList.setAdapter(adapter);
     });
+    setupLocationListener();
+
   }
 
-  @Override
-  public void onBackPressed() {
-    DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-    if (drawer.isDrawerOpen(GravityCompat.START)) {
-      drawer.closeDrawer(GravityCompat.START);
-    } else {
-      super.onBackPressed();
-    }
+  private void setupLocationListener() {
+    fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+    fusedLocationProviderClient.getLastLocation()
+        .addOnSuccessListener(this, new OnSuccessListener<Location>() {
+          @Override
+          public void onSuccess(Location location) {
+            if (location == null) {
+              Log.e(TAG, "onSuccess: null location");
+            } else {
+              myLocation = location;
+//              ContactService.setMyLocation(myLocation);
+              viewModel.setLocation(location);
+            }
+          }
+        })
+        .addOnFailureListener(new OnFailureListener() {
+          @Override
+          public void onFailure(@NonNull Exception e) {
+            Log.e(e.getClass().getSimpleName(), e.getMessage(), e);
+          }
+        });
   }
 
+  /**
+   * Inflates the menu resource. This adds items to the action bar if it is present.
+   *
+   * @param menu
+   * @return
+   */
   @Override
   public boolean onCreateOptionsMenu(Menu menu) {
-    // Inflate the menu; this adds items to the action bar if it is present.
     getMenuInflater().inflate(R.menu.main, menu);
     return true;
   }
 
+  /**
+   * Handles selections from the options menu.
+   *
+   * @param item
+   * @return
+   */
   @Override
   public boolean onOptionsItemSelected(MenuItem item) {
-    // Handle action bar item clicks here. The action bar will
-    // automatically handle clicks on the Home/Up button, so long
-    // as you specify a parent activity in AndroidManifest.xml.
     int id = item.getItemId();
-
-    //noinspection SimplifiableIfStatement
     if (id == R.id.action_settings) {
       return true;
     }
@@ -110,65 +145,67 @@ public class MainActivity extends AppCompatActivity
     return super.onOptionsItemSelected(item);
   }
 
-  @SuppressWarnings("StatementWithEmptyBody")
-  @Override
-  public boolean onNavigationItemSelected(MenuItem item) {
-    // Handle navigation view item clicks here.
-    int id = item.getItemId();
-
-    if (id == R.id.nav_camera) {
-      // Handle the camera action
-    } else if (id == R.id.nav_gallery) {
-
-    } else if (id == R.id.nav_slideshow) {
-
-    } else if (id == R.id.nav_manage) {
-
-    } else if (id == R.id.nav_share) {
-
-    } else if (id == R.id.nav_send) {
-
-    }
-
-    DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-    drawer.closeDrawer(GravityCompat.START);
-    return true;
-  }
-
-
+  /**
+   * Requests permission to use contact and location data.
+   */
   private void checkPermissions() {
     if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS)
         != PackageManager.PERMISSION_GRANTED) {
       if (ActivityCompat.shouldShowRequestPermissionRationale(this,
           Manifest.permission.READ_CONTACTS)) {
-        // Show an explanation to the user *asynchronously* -- don't block
-        // this thread waiting for the user's response! After the user
-        // sees the explanation, try again to request the permission.
-
       }
       ActivityCompat.requestPermissions(this,
           new String[]{Manifest.permission.READ_CONTACTS},
-          PERMISSIONS_REQUEST_CODE);
+          CONTACTS_PERMISSIONS_REQUEST_CODE);
+    }
+
+    if (ContextCompat.checkSelfPermission(this, permission.ACCESS_FINE_LOCATION)
+        != PackageManager.PERMISSION_GRANTED) {
+      if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+          permission.ACCESS_FINE_LOCATION)) {
+      }
+      ActivityCompat.requestPermissions(this,
+          new String[]{permission.ACCESS_FINE_LOCATION},
+          CONTACTS_PERMISSIONS_REQUEST_CODE);
+    } else {
+      setupLocationListener();
     }
 
   }
 
+  /**
+   * Checks if permission was granted and shuts down the app if permission was denied.
+   *
+   * @param requestCode
+   * @param permissions
+   * @param grantResults
+   */
   @Override
   public void onRequestPermissionsResult(int requestCode,
       String[] permissions, int[] grantResults) {
     switch (requestCode) {
-      case PERMISSIONS_REQUEST_CODE: {
+      case CONTACTS_PERMISSIONS_REQUEST_CODE:
         if (grantResults.length == 0
             || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
           Log.d("Permissions", "Permission denied!");
-          // We should shut down the app. How?
           this.finishAffinity();
           Toast.makeText(this,
               "Contact Map requires access to your contacts to run. Please re-run to allow permission",
               Toast.LENGTH_LONG).show();
         }
 
-      }
+      case LOCATION_PERMISSIONS_REQUEST_CODE:
+        if (grantResults.length == 0
+            || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+          Log.d("Permissions", "Permission denied!");
+          this.finishAffinity();
+          Toast.makeText(this,
+              "Contact Map requires access to your location to run. Please re-run to allow permission",
+              Toast.LENGTH_LONG).show();
+        } else {
+          setupLocationListener();
+        }
+
 
     }
 

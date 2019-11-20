@@ -1,3 +1,6 @@
+/*This work is copyright 2019, Andrew Patten. All right reserved.
+ */
+
 package com.andpatten.contactmap.model.pojo;
 
 import com.google.gson.annotations.Expose;

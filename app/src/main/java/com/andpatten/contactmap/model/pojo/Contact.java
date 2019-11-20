@@ -1,3 +1,6 @@
+/*This work is copyright 2019, Andrew Patten. All right reserved.
+ */
+
 package com.andpatten.contactmap.model.pojo;
 
 import android.net.Uri;
@@ -15,6 +18,16 @@ public class Contact {
   private Float latitude;
   private Float longitude;
   private Float distance;
+
+  //delete after test worked
+  public Contact(String bob) {
+    this.displayName = bob;
+
+  }
+
+  public Contact() {
+
+  }
 
   public Float getDistance() {
     return distance;
@@ -99,6 +112,6 @@ public class Contact {
   @NonNull
   @Override
   public String toString() {
-    return String.format("%1$s (%2$s)", displayName, (phoneNumber != null) ? phoneNumber : "none");
+    return String.format("%1$s [%2$s] Distance: %3$.1f miles", displayName, (phoneNumber != null) ? phoneNumber : "none", distance/1609);
   }
 }

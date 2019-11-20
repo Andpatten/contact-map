@@ -1,3 +1,5 @@
+/*This work is copyright 2019, Andrew Patten. All right reserved.
+ */
 package com.andpatten.contactmap.model.dao;
 
 import androidx.room.Dao;

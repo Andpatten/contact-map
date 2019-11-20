@@ -25,6 +25,8 @@ The app will save your previous sort/filter/max distance options for next time.
 #### [Entity Relationship Diagram](docs/erd.md)
 #### [Wireframe Diagram](docs/wireframe.md)
 #### [DDL](docs/ddl.md)
+#### [License Info](docs/license-info.md)
+#### [Current State](docs/current-state.md)
 ### Entity Classes
 #### [Filter Class](https://github.com/Andpatten/contact-map/blob/master/app/src/main/java/com/andpatten/contactmap/model/entity/Filter.java)
 #### [Query Class](https://github.com/Andpatten/contact-map/blob/master/app/src/main/java/com/andpatten/contactmap/model/entity/Query.java)
